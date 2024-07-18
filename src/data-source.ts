@@ -48,3 +48,19 @@ export const AppDataSource = new DataSource({
     migrations: [],
     subscribers: [],
 })
+
+export const AppDataSource2 = new DataSource({
+    type: "postgres",
+    host: config.host2,
+    port: config.databasePort2,
+    username: config.username2,
+    password: config.password2,
+    database: config.database2,
+    synchronize: true,
+    logging: false,
+    entities: [T_S02_TEMP, S13, S15, S31, S63, S65, T_S04_TEMP, T_S09_TEMP, T_S05_TEMP, T_G01_TEMP, T_G02_TEMP, T_G03_TEMP, T_G04_TEMP, T_G05_TEMP, T_G06_TEMP, T_G07_TEMP,
+        T_G56, T_G57, T_G58, T_S93, T_S94, T_S96, T_S97, T_S06, T_S12, T_S14, T_S17, T_S24, T_CUPS, T_CT, T_CONCENTRADORES
+    ],
+    migrations: [],
+    subscribers: [],
+})
