@@ -12,10 +12,10 @@ export function listenToWebServices(port: number, dataSource: DataSource) {
             bodyParserXml(bodyParser);
             app.use(bodyParser.xml());
 
-            app.post('/WS_STGSoapService', getData);
-            app.post('/WS_STG/WS_STG.asmx', getData);
-            app.post('/WS_DC/WS_DC.asmx', getData);
-            app.post('/', getData);
+            app.post('/WS_STGSoapService', getData(dataSource));
+            app.post('/WS_STG/WS_STG.asmx', getData(dataSource));
+            app.post('/WS_DC/WS_DC.asmx', getData(dataSource));
+            app.post('/', getData(dataSource));
 
             app.listen(port, () => {
                 console.log(`Servidor Express escuchando en el puerto ${port}`)

@@ -5,7 +5,7 @@ import { S15 } from '../entities/S15';
 import { S31 } from '../entities/S31';
 import { S63 } from '../entities/S63';
 import { S65 } from '../entities/S65';
-import { AppDataSource } from "../data-source"
+import { DataSource } from 'typeorm';
 
 const xmlResponse = `<s:Envelope
 xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
@@ -34,47 +34,48 @@ xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
 </SOAP-ENV:Envelope>`;
 
 
-export const getData = async (req: Request, res: Response) => {
-
-    try {
-		 const fechaHoraActual = new Date();
-
-		// Obtener los componentes de la fecha y hora
-		const dia = fechaHoraActual.getDate();
-		const mes = fechaHoraActual.getMonth() + 1; // Sumamos 1 porque los meses se indexan desde 0
-		const año = fechaHoraActual.getFullYear();
-		const hora = fechaHoraActual.getHours();
-		const minutos = fechaHoraActual.getMinutes();
-		const segundos = fechaHoraActual.getSeconds();
-		const fechaFormateada = `${dia}/${mes}/${año} ${hora}:${minutos}:${segundos}`;
-        const { body } = req;
-        console.log('Trama recibida ', fechaFormateada)
-
-        // Verificar si el cuerpo de la solicitud contiene datos
-        if (body) {
-            const report = body?.['S:Envelope']?.['S:Body']?.[0]?.['Report']?.[0]?.['Payload']?.[0] ||
-                          body?.['SOAP-ENV:Envelope']?.['SOAP-ENV:Body']?.[0]?.['ns2:Report']?.[0]?.['ns2:Payload']?.[0] ||
-                          body?.['SOAP-ENV:Envelope']?.['SOAP-ENV:Body']?.[0]?.['ns1:Report']?.[0]?.['ns1:Payload']?.[0];
-			
-            
-            if (report !== undefined) {
-                console.log('Evento encontrado. Parseando evento...')
-                const parsedReport = await parseXml(report);
-                console.log('Evento parseado')
-                await processReport(parsedReport);
-            } 
-        }
-		if(body['S:Envelope']?.['S:Body']?.[0]?.['Report']?.[0]?.['Payload']?.[0]) {
-			res.set('Content-Type', 'application/xml');
-			res.send(xmlResponse);
-		} else {
-			res.set('Content-Type', 'application/xml');
-			res.send(xmlResponse2);
-		}
-        
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).send('<h1>Error processing XML</h1>');
+export function getData(dataSource: DataSource) {
+    return async (req: Request, res: Response) => {
+        try {
+            const fechaHoraActual = new Date();
+   
+           // Obtener los componentes de la fecha y hora
+           const dia = fechaHoraActual.getDate();
+           const mes = fechaHoraActual.getMonth() + 1; // Sumamos 1 porque los meses se indexan desde 0
+           const año = fechaHoraActual.getFullYear();
+           const hora = fechaHoraActual.getHours();
+           const minutos = fechaHoraActual.getMinutes();
+           const segundos = fechaHoraActual.getSeconds();
+           const fechaFormateada = `${dia}/${mes}/${año} ${hora}:${minutos}:${segundos}`;
+           const { body } = req;
+           console.log('Trama recibida ', fechaFormateada)
+   
+           // Verificar si el cuerpo de la solicitud contiene datos
+           if (body) {
+               const report = body?.['S:Envelope']?.['S:Body']?.[0]?.['Report']?.[0]?.['Payload']?.[0] ||
+                             body?.['SOAP-ENV:Envelope']?.['SOAP-ENV:Body']?.[0]?.['ns2:Report']?.[0]?.['ns2:Payload']?.[0] ||
+                             body?.['SOAP-ENV:Envelope']?.['SOAP-ENV:Body']?.[0]?.['ns1:Report']?.[0]?.['ns1:Payload']?.[0];
+               
+               
+               if (report !== undefined) {
+                   console.log('Evento encontrado. Parseando evento...')
+                   const parsedReport = await parseXml(report);
+                   console.log('Evento parseado')
+                   await processReport(parsedReport, dataSource);
+               } 
+           }
+           if(body['S:Envelope']?.['S:Body']?.[0]?.['Report']?.[0]?.['Payload']?.[0]) {
+               res.set('Content-Type', 'application/xml');
+               res.send(xmlResponse);
+           } else {
+               res.set('Content-Type', 'application/xml');
+               res.send(xmlResponse2);
+           }
+           
+       } catch (error) {
+           console.error('Error:', error);
+           res.status(500).send('<h1>Error processing XML</h1>');
+       }
     }
 };
 
@@ -90,7 +91,7 @@ async function parseXml(xml: string): Promise<any> {
     });
 }
 
-async function processReport(report: any): Promise<void> {
+async function processReport(report: any, dataSource: DataSource): Promise<void> {
     console.log('Procesando evento...')
     const fechaHoraActual = new Date();
 
@@ -109,19 +110,19 @@ const fechaFormateada = `${dia}/${mes}/${año} ${hora}:${minutos}:${segundos}`;
 
     switch (IdRpt) {
         case 'S13':
-            await processS13(report, IdRpt, IdPet, Version, fechaFormateada);
+            await processS13(report, IdRpt, IdPet, Version, fechaFormateada, dataSource);
             break;
         case 'S15':
-            await processS15(report, IdRpt, IdPet, Version, fechaFormateada);
+            await processS15(report, IdRpt, IdPet, Version, fechaFormateada, dataSource);
             break;
         case 'S31':
-            await processS31(report, IdRpt, IdPet, Version, fechaFormateada);
+            await processS31(report, IdRpt, IdPet, Version, fechaFormateada, dataSource);
             break;
         case 'S63':
-            await processS63(report, IdRpt, IdPet, Version, fechaFormateada);
+            await processS63(report, IdRpt, IdPet, Version, fechaFormateada, dataSource);
             break;
         case 'S65':
-            await processS65(report, IdRpt, IdPet, Version, fechaFormateada);
+            await processS65(report, IdRpt, IdPet, Version, fechaFormateada, dataSource);
             break;
         default:
             console.error(`Unknown report type: ${IdRpt}`);
@@ -129,10 +130,10 @@ const fechaFormateada = `${dia}/${mes}/${año} ${hora}:${minutos}:${segundos}`;
     }
 }
 
-async function processS13(report: any, idRpt: string, idPet: number, version: string, fecha: string): Promise<void> {
+async function processS13(report: any, idRpt: string, idPet: number, version: string, fecha: string, dataSource: DataSource): Promise<void> {
     try {
         console.log('S13 encontrado')
-        const s13Repository = AppDataSource.getRepository(S13);
+        const s13Repository = dataSource.getRepository(S13);
         var s13 = new S13();
         s13.idRpt = idRpt;
         s13.idPet = idPet;
@@ -156,10 +157,10 @@ async function processS13(report: any, idRpt: string, idPet: number, version: st
     
 }
 
-async function processS15(report: any, idRpt: string, idPet: number, version: string, fecha: string): Promise<void> {
+async function processS15(report: any, idRpt: string, idPet: number, version: string, fecha: string, dataSource: DataSource): Promise<void> {
     try{
         console.log('S15 detectado')
-        const s15Repository = AppDataSource.getRepository(S15);
+        const s15Repository = dataSource.getRepository(S15);
         var s15 = new S15();
         s15.idRpt = idRpt;
         s15.idPet = idPet;
@@ -178,10 +179,10 @@ async function processS15(report: any, idRpt: string, idPet: number, version: st
     
 }
 
-async function processS31(report: any, idRpt: string, idPet: number, version: string, fecha: string): Promise<void> {
+async function processS31(report: any, idRpt: string, idPet: number, version: string, fecha: string, dataSource: DataSource): Promise<void> {
     try {
         console.log('S31 detectado')
-        const s31Repository = AppDataSource.getRepository(S31);
+        const s31Repository = dataSource.getRepository(S31);
         var s31 = new S31();
         s31.idRpt = idRpt;
         s31.idPet = idPet;
@@ -200,11 +201,11 @@ async function processS31(report: any, idRpt: string, idPet: number, version: st
     
 }
 
-async function processS63(report: any, idRpt: string, idPet: number, version: string, fecha: string): Promise<void> {
+async function processS63(report: any, idRpt: string, idPet: number, version: string, fecha: string, dataSource: DataSource): Promise<void> {
     try {
         for(let i=0; i<Object.keys(report.Report.Rtu[0].LVSLine[0].S63).length; i++) {
             console.log('S63 detectado')
-            var s63Repository = AppDataSource.getRepository(S63);
+            var s63Repository = dataSource.getRepository(S63);
             var s63 = new S63();
             s63.idRpt = idRpt;
             s63.idPet = idPet;
@@ -230,11 +231,11 @@ async function processS63(report: any, idRpt: string, idPet: number, version: st
     
 }
 
-async function processS65(report: any, idRpt: string, idPet: number, version: string, fecha: string): Promise<void> {
+async function processS65(report: any, idRpt: string, idPet: number, version: string, fecha: string, dataSource: DataSource): Promise<void> {
     try {
         for(let i=0; i<Object.keys(report.Report.Rtu[0].S65).length; i++) {
             console.log('S65 detectado')
-            var s65Repository = AppDataSource.getRepository(S65);
+            var s65Repository = dataSource.getRepository(S65);
             var s65 = new S65();
             s65.idRpt = idRpt;
             s65.idPet = idPet;
