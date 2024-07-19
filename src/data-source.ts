@@ -33,7 +33,7 @@ import { T_CUPS } from "./entities/T_CUPS"
 import { T_CT } from "./entities/T_CT"
 import { T_CONCENTRADORES } from "./entities/T_CONCENTRADORES"
 
-export const AppDataSource = new DataSource({
+export const AppDataSource1 = new DataSource({
     type: "postgres",
     host: config.host,
     port: config.databasePort,
@@ -56,6 +56,102 @@ export const AppDataSource2 = new DataSource({
     username: config.username2,
     password: config.password2,
     database: config.database2,
+    synchronize: true,
+    logging: false,
+    entities: [T_S02_TEMP, S13, S15, S31, S63, S65, T_S04_TEMP, T_S09_TEMP, T_S05_TEMP, T_G01_TEMP, T_G02_TEMP, T_G03_TEMP, T_G04_TEMP, T_G05_TEMP, T_G06_TEMP, T_G07_TEMP,
+        T_G56, T_G57, T_G58, T_S93, T_S94, T_S96, T_S97, T_S06, T_S12, T_S14, T_S17, T_S24, T_CUPS, T_CT, T_CONCENTRADORES
+    ],
+    migrations: [],
+    subscribers: [],
+})
+
+export const AppDataSource3 = new DataSource({
+    type: "postgres",
+    host: config.host3,
+    port: config.databasePort3,
+    username: config.username3,
+    password: config.password3,
+    database: config.database3,
+    synchronize: true,
+    logging: false,
+    entities: [T_S02_TEMP, S13, S15, S31, S63, S65, T_S04_TEMP, T_S09_TEMP, T_S05_TEMP, T_G01_TEMP, T_G02_TEMP, T_G03_TEMP, T_G04_TEMP, T_G05_TEMP, T_G06_TEMP, T_G07_TEMP,
+        T_G56, T_G57, T_G58, T_S93, T_S94, T_S96, T_S97, T_S06, T_S12, T_S14, T_S17, T_S24, T_CUPS, T_CT, T_CONCENTRADORES
+    ],
+    migrations: [],
+    subscribers: [],
+})
+
+export const AppDataSource4 = new DataSource({
+    type: "postgres",
+    host: config.host4,
+    port: config.databasePort4,
+    username: config.username4,
+    password: config.password4,
+    database: config.database4,
+    synchronize: true,
+    logging: false,
+    entities: [T_S02_TEMP, S13, S15, S31, S63, S65, T_S04_TEMP, T_S09_TEMP, T_S05_TEMP, T_G01_TEMP, T_G02_TEMP, T_G03_TEMP, T_G04_TEMP, T_G05_TEMP, T_G06_TEMP, T_G07_TEMP,
+        T_G56, T_G57, T_G58, T_S93, T_S94, T_S96, T_S97, T_S06, T_S12, T_S14, T_S17, T_S24, T_CUPS, T_CT, T_CONCENTRADORES
+    ],
+    migrations: [],
+    subscribers: [],
+})
+
+export const AppDataSource5 = new DataSource({
+    type: "postgres",
+    host: config.host5,
+    port: config.databasePort5,
+    username: config.username5,
+    password: config.password5,
+    database: config.database5,
+    synchronize: true,
+    logging: false,
+    entities: [T_S02_TEMP, S13, S15, S31, S63, S65, T_S04_TEMP, T_S09_TEMP, T_S05_TEMP, T_G01_TEMP, T_G02_TEMP, T_G03_TEMP, T_G04_TEMP, T_G05_TEMP, T_G06_TEMP, T_G07_TEMP,
+        T_G56, T_G57, T_G58, T_S93, T_S94, T_S96, T_S97, T_S06, T_S12, T_S14, T_S17, T_S24, T_CUPS, T_CT, T_CONCENTRADORES
+    ],
+    migrations: [],
+    subscribers: [],
+})
+
+export const AppDataSource6 = new DataSource({
+    type: "postgres",
+    host: config.host6,
+    port: config.databasePort6,
+    username: config.username6,
+    password: config.password6,
+    database: config.database6,
+    synchronize: true,
+    logging: false,
+    entities: [T_S02_TEMP, S13, S15, S31, S63, S65, T_S04_TEMP, T_S09_TEMP, T_S05_TEMP, T_G01_TEMP, T_G02_TEMP, T_G03_TEMP, T_G04_TEMP, T_G05_TEMP, T_G06_TEMP, T_G07_TEMP,
+        T_G56, T_G57, T_G58, T_S93, T_S94, T_S96, T_S97, T_S06, T_S12, T_S14, T_S17, T_S24, T_CUPS, T_CT, T_CONCENTRADORES
+    ],
+    migrations: [],
+    subscribers: [],
+})
+
+export const AppDataSource7 = new DataSource({
+    type: "postgres",
+    host: config.host7,
+    port: config.databasePort7,
+    username: config.username7,
+    password: config.password7,
+    database: config.database7,
+    synchronize: true,
+    logging: false,
+    entities: [T_S02_TEMP, S13, S15, S31, S63, S65, T_S04_TEMP, T_S09_TEMP, T_S05_TEMP, T_G01_TEMP, T_G02_TEMP, T_G03_TEMP, T_G04_TEMP, T_G05_TEMP, T_G06_TEMP, T_G07_TEMP,
+        T_G56, T_G57, T_G58, T_S93, T_S94, T_S96, T_S97, T_S06, T_S12, T_S14, T_S17, T_S24, T_CUPS, T_CT, T_CONCENTRADORES
+    ],
+    migrations: [],
+    subscribers: [],
+})
+
+export const AppDataSource8 = new DataSource({
+    type: "postgres",
+    host: config.host8,
+    port: config.databasePort8,
+    username: config.username8,
+    password: config.password8,
+    database: config.database8,
     synchronize: true,
     logging: false,
     entities: [T_S02_TEMP, S13, S15, S31, S63, S65, T_S04_TEMP, T_S09_TEMP, T_S05_TEMP, T_G01_TEMP, T_G02_TEMP, T_G03_TEMP, T_G04_TEMP, T_G05_TEMP, T_G06_TEMP, T_G07_TEMP,

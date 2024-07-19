@@ -7,21 +7,23 @@ const bodyParserXml = require('body-parser-xml');
 const app = express();
 
 export function listenToWebServices(port: number, dataSource: DataSource) {
-    try {
-        dataSource.initialize().then(async () => {
-            bodyParserXml(bodyParser);
-            app.use(bodyParser.xml());
-
-            app.post('/WS_STGSoapService', getData(dataSource));
-            app.post('/WS_STG/WS_STG.asmx', getData(dataSource));
-            app.post('/WS_DC/WS_DC.asmx', getData(dataSource));
-            app.post('/', getData(dataSource));
-
-            app.listen(port, () => {
-                console.log(`Servidor Express escuchando en el puerto ${port}`)
-            });
-        }).catch(error => console.error(error))
-    } catch(error) {
-        console.error('Error al conectar con la base de datos: ', error);
-    }
+    if(dataSource.options.database != '') {
+        try {
+            dataSource.initialize().then(async () => {
+                bodyParserXml(bodyParser);
+                app.use(bodyParser.xml());
+    
+                app.post('/WS_STGSoapService', getData(dataSource));
+                app.post('/WS_STG/WS_STG.asmx', getData(dataSource));
+                app.post('/WS_DC/WS_DC.asmx', getData(dataSource));
+                app.post('/', getData(dataSource));
+    
+                app.listen(port, () => {
+                    console.log(`Servidor Express escuchando en el puerto ${port}`)
+                });
+            }).catch(error => console.error(error))
+        } catch(error) {
+            console.error('Error al conectar con la base de datos: ', error);
+        }
+    } 
 }
