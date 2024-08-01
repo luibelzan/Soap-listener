@@ -4,12 +4,12 @@ import { getData } from "./controllers/EventsController";
 
 const bodyParser = require('body-parser');
 const bodyParserXml = require('body-parser-xml');
-const app = express();
 
 export function listenToWebServices(port: number, dataSource: DataSource) {
     if(dataSource.options.database != '') {
         try {
             dataSource.initialize().then(async () => {
+				const app = express();
                 bodyParserXml(bodyParser);
                 app.use(bodyParser.xml());
     
