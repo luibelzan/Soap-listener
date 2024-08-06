@@ -143,8 +143,8 @@ async function processS13(report: any, idRpt: string, idPet: number, version: st
         s13.fh = report.Report.Cnc[0].Cnt[0].S13[0].$.Fh;
         s13.et = parseInt(report.Report.Cnc[0].Cnt[0].S13[0].$.Et);
         s13.c = parseInt(report.Report.Cnc[0].Cnt[0].S13[0].$.C);
-        s13.d1 = report.Report.Cnc[0].Cnt[0].S13[0].$.D1;
-        s13.d2 = report.Report.Cnc[0].Cnt[0].S13[0].$.D2;
+        s13.d1 = report.Report.Cnc[0].Cnt[0].S13[0].D1?.[0];
+        s13.d2 = report.Report.Cnc[0].Cnt[0].S13[0].D2?.[0];
         if(report.Report.Cnc[0].Cnt[0].S13[0].$.ErrCat !== undefined) {
             s13.errCat = parseInt(report.Report.Cnc[0].Cnt[0].S13[0].$.ErrCat);
             s13.errCode = parseInt(report.Report.Cnc[0].Cnt[0].S13[0].$.ErrCode);
@@ -169,8 +169,8 @@ async function processS15(report: any, idRpt: string, idPet: number, version: st
         s15.fh = report.Report.Cnc[0].S15[0].$.Fh;
         s15.et = parseInt(report.Report.Cnc[0].S15[0].$.Et);
         s15.c = parseInt(report.Report.Cnc[0].S15[0].$.C);
-        s15.d1 = report.Report.Cnc[0].S15[0].$.D1;
-        s15.d2 = report.Report.Cnc[0].S15[0].$.D2;
+        s15.d1 = report.Report.Cnc[0].S15[0].D1?.[0];
+        s15.d2 = report.Report.Cnc[0].S15[0].D2?.[0];
         s15Repository.save(s15);
         console.log('S15 event inserted on DB ', fecha, '/n');
     } catch(error) {
@@ -220,8 +220,8 @@ async function processS63(report: any, idRpt: string, idPet: number, version: st
             s63.fh = report.Report.Rtu[0].LVSLine[0].S63[i].$.Fh;
             s63.et = parseInt(report.Report.Rtu[0].LVSLine[0].S63[i].$.Et);
             s63.c = parseInt(report.Report.Rtu[0].LVSLine[0].S63[i].$.C);
-            s63.d1 = report.Report.Rtu[0].LVSLine[0].S63[i].$.D1;
-            s63.d2 = report.Report.Rtu[0].LVSLine[0].S63[i].$.D2;
+            s63.d1 = report.Report.Rtu[0].LVSLine[0].S63[i].D1?.[0];
+            s63.d2 = report.Report.Rtu[0].LVSLine[0].S63[i].D2?.[0];
             s63Repository.save(s63);
             console.log('S63 event inserted on DB ', fecha, '/n');
         }
@@ -248,8 +248,8 @@ async function processS65(report: any, idRpt: string, idPet: number, version: st
             s65.fh = report.Report.Rtu[0].S65[i].$.Fh;
             s65.et = parseInt(report.Report.Rtu[0].S65[i].$.Et);
             s65.c = parseInt(report.Report.Rtu[0].S65[i].$.C);
-            s65.d1 = report.Report.Rtu[0].S65[i].$.D1;
-            s65.d2 = report.Report.Rtu[0].S65[i].$.D2;
+            s65.d1 = report.Report.Rtu[0].S65[i].D1?.[0]
+            s65.d2 = report.Report.Rtu[0].S65[i].D2?.[0];
             s65Repository.save(s65);
             console.log('S65 event inserted on DB ', fecha, '/n');
         }
